@@ -10,23 +10,14 @@ def getPreprocessedDataOnGPU():
     testFull = cudf.read_csv("Data/testFull.csv", index_col = 0)
     
     #Randomize samples
-    trainFull = trainFull.sample(len(trainFull))
-    testFull = testFull.sample(len(testFull))
-
-    #Randomize samples
-    trainFull = trainFull.sample(len(trainFull))
-    testFull = testFull.sample(len(testFull))
+    trainFull = trainFull.sample(len(trainFull), random_state=42)  
+    testFull = testFull.sample(len(testFull), random_state=42) 
 
     #Reduce features and extract labels
-    trainX = trainFull.iloc[:,:-1]
-    trainY = trainFull.iloc[:,-1]
-    testX = testFull.iloc[:,:-1]
-    testY = testFull.iloc[:,-1]
-
-    #Reshape data to 3D for CNN
-    trainX = trainX.to_numpy()[..., None]
-    trainY = trainY.to_numpy()[..., None]
-    testX = testX.to_numpy()[..., None]
-    testY = testY.to_numpy()[..., None]
+    trainX = trainFull.iloc[:,:-1].astype('float32')
+    trainY = trainFull.iloc[:,-1].astype('int32')
+    testX = testFull.iloc[:,:-1].astype('float32')
+    testY = testFull.iloc[:,-1].astype('float32')
+    
 
     return trainX, trainY, testX, testY
