@@ -1,1 +1,1 @@
-from .OptunaObjective import objective
+from .OptunaObjective import objective_RF,objective_DT
